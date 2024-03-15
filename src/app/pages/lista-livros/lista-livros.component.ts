@@ -8,6 +8,7 @@ import { LivrosResultado, Item } from '../../models/interfaces';
 import { LivroVolumeInfo } from '../../models/livroVolumeInfo';
 import { LivroService } from '../../service/livro.service';
 import { LivroComponent } from '../../componentes/livro/livro.component';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 
 const PAUSA = 300;
@@ -32,7 +33,10 @@ export class ListaLivrosComponent implements AfterViewInit {
   @ViewChild('campoBuscaElement')
   campoBuscaElement!: ElementRef;
 
-  constructor(private service: LivroService) { }
+  constructor(
+    private service: LivroService,
+    private liveAnnouncer: LiveAnnouncer  
+  ) { }
 
   ngAfterViewInit() {
     this.campoBuscaElement.nativeElement.focus();
@@ -51,6 +55,7 @@ export class ListaLivrosComponent implements AfterViewInit {
     }),
     tap((resultado) => {
       this.livrosResultado = resultado;
+      this.liveAnnouncer.announce(`${this.livrosResultado.totalItems} livros encontrados`)
     }),
     map((resultado) => resultado.items ?? []),
     map((items) => this.livrosResultadoParaLivros(items)),
