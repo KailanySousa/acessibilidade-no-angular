@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  HostListener,
   Input,
   Output,
 } from '@angular/core';
@@ -23,6 +24,13 @@ export class ModalComponent {
   @Output() mudouModal = new EventEmitter<boolean>()
 
   constructor() {}
+
+  @HostListener('document:keydown.escape')
+  fecharModalAoPressionarEsc() {
+    if (this.statusModal) {
+      this.fecharModal();
+    }
+  }
 
   fecharModal() {
     this.statusModal = false
